@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { BsFillBugFill } from "react-icons/bs";
+import classNames from "classnames";
 
 const Navbar = () => {
+  const currentPath = usePathname();
+
   const links = [
     {
       name: "Dashboard",
@@ -29,7 +35,11 @@ const Navbar = () => {
           <Link
             key={link.name}
             href={link.url}
-            className="font-semibold text-zinc-600 hover:text-zinc-700"
+            className={classNames({
+              "text-zinc-600": currentPath === link.url,
+              "text-zinc-400": currentPath !== link.url,
+              "font-semibold hover:text-zinc-600 transition duration-300": true,
+            })}
           >
             {link.name}
           </Link>
