@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import getErrorMessage from "@/lib/getErrorMessage";
 import ErrorMessage from "./ErrorMessage";
+import Spinner from "./Spinner";
 
 const NewIssueForm = () => {
   const router = useRouter();
@@ -25,7 +26,10 @@ const NewIssueForm = () => {
     resolver: zodResolver(NewIssueSchema),
   });
 
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
   const onSubmit: SubmitHandler<IssueSchemaType> = async (data) => {
+    setIsSubmitting(true);
     reset();
     const result = await AddNewIssue(data);
     if (!result) {
@@ -36,6 +40,7 @@ const NewIssueForm = () => {
       toast.success("Issue Successfully created!");
       router.push("/issues");
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -55,7 +60,10 @@ const NewIssueForm = () => {
         )}
       />
       <ErrorMessage>{errors.content?.message}</ErrorMessage>
-      <Button>Submit New Issue</Button>
+      <Button disabled={isSubmitting}>
+        Submit New Issue
+        {isSubmitting && <Spinner />}
+      </Button>
     </form>
   );
 };
