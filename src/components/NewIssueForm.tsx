@@ -11,6 +11,7 @@ import { AddNewIssue } from "@/serverAction/AddNewIssue";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import getErrorMessage from "@/lib/getErrorMessage";
+import ErrorMessage from "./ErrorMessage";
 
 const NewIssueForm = () => {
   const router = useRouter();
@@ -45,9 +46,7 @@ const NewIssueForm = () => {
       <TextField.Root>
         <TextField.Input placeholder="Issue Title" {...register("title")} />
       </TextField.Root>
-      {errors.title?.message && (
-        <p className="text-red-500">{errors.title.message}</p>
-      )}
+      <ErrorMessage>{errors.title?.message}</ErrorMessage>
       <Controller
         name="content"
         control={control}
@@ -55,9 +54,7 @@ const NewIssueForm = () => {
           <SimpleMDE placeholder="Issue Description" {...field} />
         )}
       />
-      {errors.content?.message && (
-        <p className="text-red-500">{errors.content.message}</p>
-      )}
+      <ErrorMessage>{errors.content?.message}</ErrorMessage>
       <Button>Submit New Issue</Button>
     </form>
   );
